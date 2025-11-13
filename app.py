@@ -10,7 +10,7 @@ import numpy as np
 class HuskyWolfClassifier(nn.Module):
     def __init__(self, num_classes=2):
         super(HuskyWolfClassifier, self).__init__()
-        self.resnet = models.resnet18(pretrained=False)
+        self.resnet = models.resnet18(weights=None)
         num_features = self.resnet.fc.in_features
         self.resnet.fc = nn.Sequential(
             nn.Dropout(0.5),
@@ -87,11 +87,9 @@ def predict(image):
     except Exception as e:
         return {"Error": f"Prediction failed: {str(e)}"}
 
-# Example images info
-examples = [
-    ["data/train/husky/husky_1.jpg"] if __name__ == "__main__" else None,
-    ["data/train/wolf/wolf_1.jpg"] if __name__ == "__main__" else None,
-]
+# Example images (add your own examples here for local testing)
+# For deployment, examples will be None
+examples = None
 
 # Create Gradio interface
 title = "🐺 Husky vs Wolf Classifier"
@@ -138,7 +136,7 @@ interface = gr.Interface(
     title=title,
     description=description,
     article=article,
-    examples=examples if any(examples) else None,
+    examples=examples,
     theme=gr.themes.Soft(),
     allow_flagging="never"
 )
